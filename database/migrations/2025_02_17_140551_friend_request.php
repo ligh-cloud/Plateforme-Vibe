@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up():void
     {
-        Schema::create('friend_request', function (Blueprint $table){
+        Schema::create('friend_requests', function (Blueprint $table){
             $table->id();
-            $table->foreignId('id_receiver')->constrained('users');
-            $table->foreignId('id_sender')->constrained('users');
+            $table->foreignId('receiver_id')->constrained('users');
+            $table->foreignId('sender_id')->constrained('users');
             $table->timestamp('created_at');
+            $table->enum('status', ['accepted' , 'refused' , 'pending'])->default('pending');
         });
     }
 

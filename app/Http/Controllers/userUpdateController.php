@@ -19,7 +19,7 @@ class UserUpdateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . Auth::id(),
-            'bio' => 'nullable|string|max:500', // Add this line
+            'bio' => 'nullable|string|max:500',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
