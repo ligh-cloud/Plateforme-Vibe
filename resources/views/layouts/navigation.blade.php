@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('friends')" :active="request()->routeIs('friends')">
                         {{ __('Friends') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('friends.pending')" :active="request()->routeIs('friends.pending')">
+                        {{ __('Friends Request') }}
+                    </x-nav-link>
                 </div>
             </div>
 

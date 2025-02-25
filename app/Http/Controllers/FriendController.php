@@ -40,17 +40,57 @@ class FriendController extends Controller
 
         return response()->json(['success' => 'Demande d\'ami envoyée avec succès !'], 200);
     }
-    public function showFriends(){
-            $userId = Auth::id();
+    public function showFriends()
+    {
+        $user = Auth::user();
+        $friends = $user->getFriends();
 
-            // Get all users who accepted the friend request
-            $friends = User::whereHas('friendsAccepted', function ($query) use ($userId) {
-                $query->where('receiver_id', $userId)
-                    ->orWhere('sender_id', $userId);
-            })->get();
+        return view('friends.index', compact('friends'));
+    }
+    public function showFriendProfile(User $user) {
 
-            return view('friends.index', compact('friends'));
+        $authUser = Auth::user();
+        $isFriend = $authUser->friendsAccepted()->where('receiver_id', $user->id)
+            ->orWhere('sender_id', $user->id)->exists();
+        return view('friends.profile', compact('user', 'isFriend'));
+    }
 
+    public function showPendingRequests()
+    {
+        $pendingRequests = FriendRequest::getPendingRequests();
+        return view('friends.pending-requests', compact('pendingRequests'));
+    }
+
+    public function acceptRequest($requestId)
+    {
+        $request = FriendRequest::findOrFail($requestId);
+
+        // Verify that the authenticated user is the receiver of this request
+        if (Auth::id() != $request->receiver_id) {
+            return redirect()->back()->with('error', 'Non autorisé à accepter cette demande.');
+        }
+
+        // Update the request status
+        $request->status = 'accepted';
+        $request->save();
+
+        return redirect()->back()->with('success', 'Demande d\'ami acceptée!');
+    }
+
+    public function rejectRequest($requestId)
+    {
+        $request = FriendRequest::findOrFail($requestId);
+
+        // Verify that the authenticated user is the receiver of this request
+        if (Auth::id() != $request->receiver_id) {
+            return redirect()->back()->with('error', 'Non autorisé à refuser cette demande.');
+        }
+
+
+        $request->status = 'refused';
+        $request->save();
+
+        return redirect()->back()->with('success', 'Demande d\'ami refusée.');
     }
 
 }

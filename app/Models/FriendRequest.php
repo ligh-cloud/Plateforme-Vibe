@@ -38,4 +38,52 @@ class FriendRequest extends Model
 
         ]);
     }
+    public static function getPendingRequests()
+    {
+        $userId = Auth::id();
+
+        // Get all pending friend requests where current user is the receiver
+        return self::where('receiver_id', $userId)
+            ->where('status', 'pending')
+            ->with('sender') // Eager load the sender's info
+            ->get();
+    }
+
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function friendRequestsReceived()
+    {
+        return $this->hasMany(FriendRequest::class, 'receiver_id');
+    }
+
+    public function friendRequests()
+    {
+        return $this->hasMany(FriendRequest::class, 'sender_id')
+            ->orWhere('receiver_id', $this->id);
+    }
+
+    public function friendsAccepted()
+    {
+        return $this->hasMany(FriendRequest::class, 'sender_id')
+            ->where('status', 'accepted')
+            ->orWhere(function ($query) {
+                $query->where('receiver_id', $this->id)
+                    ->where('status', 'accepted');
+            });
+    }
+    public function getFriends(){
+
+        $friends = $this->hasMany(FriendRequest::class, 'sender_id')
+            ->where('status', 'accepted')
+            ->orWhere(function ($query) {
+                $query->where('receiver_id', Auth::id())
+                    ->where('status', 'accepted');
+            })->get();
+        return $friends;
+    }
 }
+

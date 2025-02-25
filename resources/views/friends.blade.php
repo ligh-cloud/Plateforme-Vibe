@@ -42,9 +42,9 @@
                                             {{ $user->bio ?? 'Aucune bio disponible' }}
                                         </td>
                                         <td class="px-4 py-4">
-{{--                                            <a href="{{ route('profile.view', $user->id) }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-vibe-purple to-vibe-teal text-white rounded-lg font-medium hover:from-vibe-purple/80 hover:to-vibe-teal/80 focus:outline-none focus:ring-2 focus:ring-vibe-purple focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-200">--}}
-{{--                                                {{ __('Voir') }}--}}
-{{--                                            </a>--}}
+                                            <a href="{{ route('add_friend', ['user' => $user->id]) }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-vibe-purple to-vibe-teal text-red rounded-lg font-medium hover:from-vibe-purple/80 hover:to-vibe-teal/80 focus:outline-none focus:ring-2 focus:ring-vibe-purple focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-200">--}}
+                                                {{ __('Voir') }}
+                                            </a>
                                         </td>
                                         <td class="px-4 py-4">
                                             <a href="{{route('add_friend' , ['user' => $user->id])}}">Add friends</a>
