@@ -21,14 +21,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/search-view', [UserSearchController::class, 'index'])->name('user.search.view');
 
     Route::put('/profile/update', [UserUpdateController::class, 'update'])->name('profile.update');
-    Route::get('/friends' , [\App\Http\Controllers\FriendController::class , 'showUsers'])->name('friends');
+    Route::get('/users' , [\App\Http\Controllers\FriendController::class , 'showUsers'])->name('Explore');
+    Route::get('/friends' , [\App\Http\Controllers\FriendController::class , 'showFriends'])->name('friends');
     Route::get('/add_friend/{user}', [\App\Http\Controllers\FriendController::class, 'addFriends'])->name('add_friend');
     Route::get('/post' , [\App\Http\Controllers\PostController::class , 'index'])->name('post.show');
     Route::post('/create/post' , [\App\Http\Controllers\PostController::class , 'create'])->name('posts.store');
     Route::post('/post/{post}/like' , [\App\Http\Controllers\PostController::class , 'like'])->name('posts.like') ;
-    Route::post('/post/comment' , function (){
-        return 'this is comment';
-    })->name('posts.comments') ;
+    Route::post('/post/{post}/comment' , [\App\Http\Controllers\commentController::class , 'comment'])->name('comments.store') ;
 
 
 

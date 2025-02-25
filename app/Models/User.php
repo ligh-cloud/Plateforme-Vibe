@@ -23,6 +23,13 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function friendsAccepted()
+    {
+        return $this->hasMany(FriendRequest::class, 'receiver_id')
+            ->orWhere('sender_id', $this->id)
+            ->where('status', 'accepted');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

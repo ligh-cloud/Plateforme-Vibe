@@ -40,5 +40,17 @@ class FriendController extends Controller
 
         return response()->json(['success' => 'Demande d\'ami envoyée avec succès !'], 200);
     }
+    public function showFriends(){
+            $userId = Auth::id();
+
+            // Get all users who accepted the friend request
+            $friends = User::whereHas('friendsAccepted', function ($query) use ($userId) {
+                $query->where('receiver_id', $userId)
+                    ->orWhere('sender_id', $userId);
+            })->get();
+
+            return view('friends.index', compact('friends'));
+
+    }
 
 }

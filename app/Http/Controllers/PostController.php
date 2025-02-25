@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\comment;
 use App\Models\like;
 use Illuminate\Http\Request;
 use App\Models\post;
