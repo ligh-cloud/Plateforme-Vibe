@@ -80,6 +80,7 @@ class User extends Authenticatable
                 $friendIds->push($request->sender_id);
             }
         }
+        dd($friendIds);
 
         // Find all users with these IDs
         return User::whereIn('id', $friendIds)->get();
