@@ -14,9 +14,11 @@ class FriendController extends Controller
     {
         $friend = new Friend();
         $users = $friend->getAllUsers();
-
-        return view('friends', compact('users'));
+        $connectedUser = Auth::user();
+        $pendingRequests = FriendRequest::where('sender_id', $connectedUser->id)->pluck('receiver_id')->toArray();
+        return view('friends', compact('users', 'connectedUser', 'pendingRequests'));
     }
+
     public function addFriends(User $user)
     {
         $connectedUser = Auth::user();
@@ -38,7 +40,7 @@ class FriendController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        return response()->json(['success' => 'Demande d\'ami envoyée avec succès !'], 200);
+        return redirect()->back()->with('success', 'Demande d\'ami envoyée avec succès !');
     }
     public function showFriends()
     {
@@ -60,6 +62,23 @@ class FriendController extends Controller
         $pendingRequests = FriendRequest::getPendingRequests();
         return view('friends.pending-requests', compact('pendingRequests'));
     }
+
+//    public function showPendingRequests()
+//    {
+//        $connectedUser = Auth::user();
+//
+//        // Fetch users with pending friend requests only
+//        $usersWithPendingRequests = User::whereHas('friendRequests', function ($query) use ($connectedUser) {
+//            $query->where(function ($q) use ($connectedUser) {
+//                $q->where('sender_id', $connectedUser->id)
+//                    ->orWhere('receiver_id', $connectedUser->id);
+//            })->where('status', 'pending');
+//        })->get();
+//
+//        return view('friends.pending-requests', compact('usersWithPendingRequests'));
+//    }
+
+
 
     public function acceptRequest($requestId)
     {

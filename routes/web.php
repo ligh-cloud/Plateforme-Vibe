@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users' , [\App\Http\Controllers\FriendController::class , 'showUsers'])->name('Explore');
     Route::get('/user/friends' , [\App\Http\Controllers\FriendController::class , 'showFriends'])->name('friends');
     Route::get('/friends' , [\App\Http\Controllers\FriendController::class , 'showFriendProfile'])->name('friend.show');
-    Route::get('/add_friend/{user}', [\App\Http\Controllers\FriendController::class, 'addFriends'])->name('add_friend');
+    Route::post('/add_friend/{user}', [\App\Http\Controllers\FriendController::class, 'addFriends'])->name('add_friend');
     Route::get('/post' , [\App\Http\Controllers\PostController::class , 'index'])->name('post.show');
     Route::get('/post' , [\App\Http\Controllers\PostController::class , 'numberLikes'])->name('post.show');
     Route::post('/create/post' , [\App\Http\Controllers\PostController::class , 'create'])->name('posts.store');
